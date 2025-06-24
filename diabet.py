@@ -70,17 +70,17 @@ print(classification_report(y_test, y_pred))
 
 from imblearn.over_sampling import SMOTE
 
-# SMOTE nesnesi oluştur
+
 smote = SMOTE(random_state=42)
 
-# Sadece eğitim verisi üzerinde SMOTE uygula
+
 X_resampled, y_resampled = smote.fit_resample(X_train, y_train)
 model = LogisticRegression()
 model.fit(X_resampled, y_resampled)
 
 y_pred = model.predict(X_test)
 
-# Performans ölç
+
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
 print("Doğruluk Oranı:", accuracy_score(y_test, y_pred))
@@ -89,31 +89,31 @@ print(classification_report(y_test, y_pred))
 
 from sklearn.ensemble import RandomForestClassifier
 
-# Modeli oluştur
+
 rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
 rf_model.fit(X_resampled, y_resampled)  # SMOTE sonrası verilerle eğitiyoruz
 
-# Test verisi ile tahmin
+
 y_pred_rf = rf_model.predict(X_test)
 
-# Performans metriklerini al
+
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
 print("Doğruluk Oranı:", accuracy_score(y_test, y_pred_rf))
 print(confusion_matrix(y_test, y_pred_rf))
 print(classification_report(y_test, y_pred_rf))
 
-# Olasılıkları al
+
 y_probs = rf_model.predict_proba(X_test)[:, 1]  # Sınıf 1 (diyabet) olasılıkları
 
-# ROC değerleri
+
 fpr, tpr, thresholds = roc_curve(y_test, y_probs)
 
-# AUC skoru
+
 roc_auc = roc_auc_score(y_test, y_probs)
 print("ROC AUC Skoru:", roc_auc)
 
-# ROC grafiği
+
 plt.figure(figsize=(8, 6))
 plt.plot(fpr, tpr, label='ROC Curve (AUC = %0.2f)' % roc_auc, color='darkorange')
 plt.plot([0, 1], [0, 1], linestyle='--', color='gray')
@@ -124,18 +124,18 @@ plt.legend(loc="lower right")
 plt.grid()
 plt.show()
 
-# XGBoost
+
 from xgboost import XGBClassifier
 xgb = XGBClassifier(eval_metric='logloss')
 xgb.fit(X_train, y_train)
 y_pred = xgb.predict(X_test)
 
-# Değerlendirme
+
 from sklearn.metrics import classification_report
 print(classification_report(y_test, y_pred))
 
-# Özellik isimlerini yeniden tanımla
-feature_names = X.columns  # scaler'dan önce tanımlanmalı
+
+feature_names = X.columns  
 
 # Özellik önemi grafiği
 import matplotlib.pyplot as plt
@@ -169,7 +169,3 @@ grid.fit(X_train, y_train)
 
 print("En iyi parametreler:", grid.best_params_)
 print("En iyi skor:", grid.best_score_)
-import joblib
-
-# Eğitilmiş GridSearchCV pipeline'ı kaydet
-joblib.dump(grid.best_estimator_, 'xgb_pipeline.pkl')
