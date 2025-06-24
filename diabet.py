@@ -39,11 +39,11 @@ plt.show()
 
 from sklearn.model_selection import train_test_split
 
-# X: bağımsız değişkenler, y: bağımlı değişken (Outcome)
+
 X = df.drop('Outcome', axis=1)
 y = df['Outcome']
 
-# Veriyi %80 eğitim - %20 test olarak bölüyoruz
+
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 
@@ -61,10 +61,10 @@ model.fit(X_train, y_train)
 
 y_pred = model.predict(X_test)
 
-# Doğruluk oranı
+
 print("Doğruluk Oranı:", accuracy_score(y_test, y_pred))
 
-# Detaylı performans raporu
+
 print(confusion_matrix(y_test, y_pred))
 print(classification_report(y_test, y_pred))
 
@@ -91,7 +91,7 @@ from sklearn.ensemble import RandomForestClassifier
 
 
 rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
-rf_model.fit(X_resampled, y_resampled)  # SMOTE sonrası verilerle eğitiyoruz
+rf_model.fit(X_resampled, y_resampled)  
 
 
 y_pred_rf = rf_model.predict(X_test)
@@ -104,7 +104,7 @@ print(confusion_matrix(y_test, y_pred_rf))
 print(classification_report(y_test, y_pred_rf))
 
 
-y_probs = rf_model.predict_proba(X_test)[:, 1]  # Sınıf 1 (diyabet) olasılıkları
+y_probs = rf_model.predict_proba(X_test)[:, 1] 
 
 
 fpr, tpr, thresholds = roc_curve(y_test, y_probs)
@@ -137,7 +137,7 @@ print(classification_report(y_test, y_pred))
 
 feature_names = X.columns  
 
-# Özellik önemi grafiği
+
 import matplotlib.pyplot as plt
 import seaborn as sns
 importance = xgb.feature_importances_
